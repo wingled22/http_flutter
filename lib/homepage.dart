@@ -18,7 +18,7 @@ class _HomepageState extends State<Homepage> {
     var response = await http.get(
       Uri.https('localhost:7264', "/api/categoryapi"));
     var jsonData = jsonDecode(response.body);
-    print(response.body);
+    // print(response.body);
     for (var cat in jsonData) {
       final category = Ctgry(
         CatId: cat['id'],
@@ -30,26 +30,24 @@ class _HomepageState extends State<Homepage> {
 
   Future postCategory() async{
     var response = await http.post(
-      Uri.parse("https://localhost:7264/api/categoryapi"),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(
-        {
-          'Name': "Milk",
-          'Status': "shesh"
-         })
-    );
+          Uri.parse("https://localhost:7264/api/categoryapi"),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode(
+            {
+              'Name': "Coffee",
+              'Status': "active"
+            })
+        );
 
-    if (response.statusCode < 299) {
-      // print('Data posted successfully');
       var jsonData = jsonDecode(response.body);
       final newcategory = Ctgry(CatId: jsonData['id'], CatName: jsonData['name']);
+
       setState(() {
-        categories.add(newcategory);
+        categories.clear();
+        // categories.add(newcategory);
+
       });
-    } else {
-      print('Failed to post data');
-      print('Response: ${response.body}');
-    }
+   
   }
 
 
