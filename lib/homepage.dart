@@ -15,6 +15,7 @@ class _HomepageState extends State<Homepage> {
   List<Ctgry> categories = [];
 
   Future getCategories() async {
+    print("Iwascalled");
     var response = await http.get(
       Uri.https('localhost:7264', "/api/categoryapi"));
     var jsonData = jsonDecode(response.body);
@@ -26,6 +27,8 @@ class _HomepageState extends State<Homepage> {
       );
       categories.add(category);
     }
+    delayedAction();
+
   }
 
   Future postCategory() async{
@@ -38,18 +41,22 @@ class _HomepageState extends State<Homepage> {
               'Status': "active"
             })
         );
-
+      print("will print if there is data recieved");
       var jsonData = jsonDecode(response.body);
       final newcategory = Ctgry(CatId: jsonData['id'], CatName: jsonData['name']);
-
       setState(() {
         categories.clear();
-        // categories.add(newcategory);
-
+        
       });
-   
   }
 
+  Future<void> delayedAction() async {
+    // Wait for 2 seconds (you can adjust the duration as needed)
+    await Future.delayed(Duration(seconds: 100));
+
+    // Perform the desired action after the delay
+    print("Delayed action performed after 2 seconds");
+  }
 
   void showAddCategory(){
     showDialog(
@@ -116,6 +123,9 @@ class _HomepageState extends State<Homepage> {
             backgroundColor: Colors.amber,
             foregroundColor: Colors.white,
             child: const Icon(Icons.add),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25.0), // Adjust the value as needed
+            ),
           ),
     );
   }
